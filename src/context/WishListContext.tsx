@@ -61,7 +61,7 @@ export default function WishListContextProvider({children} : {children : ReactNo
         getWishList()
 
 
-    } , [])
+    } , [session.status])
 
 
 return <wishListContext.Provider value={{wishListitems , setwishListitems ,getWishList}}>

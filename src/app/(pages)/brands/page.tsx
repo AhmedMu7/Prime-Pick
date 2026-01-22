@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 export default async function Brands() {
-  const response = await fetch("http://localhost:3000/api/get-brands");
+  const response = await fetch("/api/get-brands");
 
   const { data }: { data: Brand[] } = await response.json();
 

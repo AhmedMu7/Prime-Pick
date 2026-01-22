@@ -34,7 +34,7 @@ export default function CartContextProvider({
 
   async function getUserCart() {
     if (session.status == "authenticated") {
-      const response = await fetch("http://localhost:3000/api/get-cart");
+      const response = await fetch("/api/get-cart");
 
       const data: CartResponse = await response.json();
 

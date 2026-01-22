@@ -33,7 +33,7 @@ export default function Categories() {
     setProducts([]);
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:3000/api/get-categoryProducts?category=${categoryId}`);
+      const response = await fetch(`/api/get-categoryProducts?category=${categoryId}`);
       const data = await response.json()
       if (data.results && data.results > 0) {
         setProducts(data.data);
@@ -49,7 +49,7 @@ export default function Categories() {
     setProducts([]);
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:3000/api/get-products');
+      const response = await fetch('/api/get-products');
       const data = await response.json()
       
       if (data.results && data.results > 0) {
