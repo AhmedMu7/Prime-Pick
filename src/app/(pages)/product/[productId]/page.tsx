@@ -11,11 +11,14 @@ import { Params } from "next/dist/server/request/params";
 import Image from "next/image";
 import React from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductDetails({ params }: { params: Params }) {
   const { productId } = await params;
 
   const productResponse = await fetch(
-    "https://ecommerce.routemisr.com/api/v1/products/" + productId
+    "https://ecommerce.routemisr.com/api/v1/products/" + productId,
+    { cache: 'no-store' }
   );
   const { data: product }: { data: Product } = await productResponse.json();
 

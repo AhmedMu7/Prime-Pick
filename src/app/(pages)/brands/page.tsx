@@ -2,8 +2,10 @@ import { Brand } from "@/interfaces/productInterface";
 import Image from "next/image";
 import React from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Brands() {
-  const response = await fetch("/api/get-brands");
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/get-brands`, { cache: 'no-store' });
 
   const { data }: { data: Brand[] } = await response.json();
 
