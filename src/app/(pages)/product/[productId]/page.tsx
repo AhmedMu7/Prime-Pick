@@ -1,4 +1,5 @@
 import AddToCart from "@/components/AddToCart";
+import ProductCard from "@/components/ProductCard";
 import {
   Carousel,
   CarouselContent,
@@ -6,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Product } from "@/interfaces/productInterface";
+import { Product, ProductResponse } from "@/interfaces/productInterface";
 import { Params } from "next/dist/server/request/params";
 import Image from "next/image";
 import React from "react";
@@ -22,11 +23,20 @@ export default async function ProductDetails({ params }: { params: Params }) {
   );
   const { data: product }: { data: Product } = await productResponse.json();
 
+  const relatedProductsResponse = await fetch(
+    `https://ecommerce.routemisr.com/api/v1/products?category=${product.category._id}`,
+    { cache: "no-store" }
+  );
+  const { data: relatedProducts }: ProductResponse = await relatedProductsResponse.json();
+  const topRelatedProducts = relatedProducts
+    .filter((item) => item._id !== product._id)
+    .slice(0, 4);
+
   return (
     <>
-      <section className="my-10">
-        <div className="container mx-auto grid grid-cols-5 space-x-20 items-center rounded-2xl px-10 py-5">
-          <div className="col-span-2 p-3 ">
+      <section className="my-8 sm:my-10 lg:my-12">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-15 lg:gap-20 items-start rounded-2xl px-4 sm:px-6 lg:px-10 py-4 sm:py-5 lg:py-5">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2 m-10">
             <Carousel>
               <CarouselContent>
                 {product.images.map((item, index) => (
@@ -47,8 +57,8 @@ export default async function ProductDetails({ params }: { params: Params }) {
             </Carousel>
           </div>
 
-          <div className="col-span-3 space-y-5">
-            <div className="flex items-center gap-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-3 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="flex">
                 {[...Array(Math.round(product.ratingsAverage))].map(
                   (_, index) => (
@@ -93,19 +103,19 @@ export default async function ProductDetails({ params }: { params: Params }) {
                 ({product.ratingsQuantity} customer reviews)
               </span>
             </div>
-            <h1 className="mb-3 font-semibold text-xl"> {product.title} </h1>
+            <h1 className="mb-3 font-semibold text-lg sm:text-xl lg:text-2xl"> {product.title} </h1>
             <p className="text-gray-500"> {product.description} </p>
             <h2>{product.brand.name} </h2>
-            <h2 className=" font-bold text-xl">EGP {product.price} </h2>
-            <h2 className="font-bold text-xl">{product.quantity} In Stock </h2>
-            <div className="flex items-center space-x-2">
-              <div className="flex space-x-10 border-2 px-4 py-3 rounded-md">
-                <button className=" font-bold">-</button>
-                <span className=" font-semibold">1</span>
-                <button className=" font-bold">+</button>
+            <h2 className="font-bold text-lg sm:text-xl lg:text-2xl">EGP {product.price} </h2>
+            <h2 className="font-bold text-sm sm:text-base lg:text-lg">{product.quantity} In Stock </h2>
+            <div className="flex flex-row sm:items-center gap-3 sm:gap-2">
+              <div className="flex space-x-4 sm:space-x-10 border-2 px-3 sm:px-4 py-2 sm:py-3 rounded-md">
+                <button className=" font-bold text-sm sm:text-base">-</button>
+                <span className=" font-semibold text-sm sm:text-base">1</span>
+                <button className=" font-bold text-sm sm:text-base">+</button>
               </div>
 
-              <div className="flex space-x-10 h-12 w-50 rounded-md">
+              <div className="w-full flex flex-1 sm:flex-initial space-x-3 sm:space-x-10 h-10 sm:h-12 rounded-md">
 
                 <AddToCart productId={product._id} />
               
@@ -116,7 +126,7 @@ export default async function ProductDetails({ params }: { params: Params }) {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6 fill-white hover:cursor-pointer duration-100 hover:text-red-500 hover:fill-red-500"
+                className="size-8 fill-white hover:cursor-pointer duration-100 hover:text-red-500 hover:fill-red-500"
               >
                 <path
                   strokeLinecap="round"
@@ -128,6 +138,20 @@ export default async function ProductDetails({ params }: { params: Params }) {
           </div>
         </div>
       </section>
+
+      {topRelatedProducts.length > 0 && (
+        <section className="my-16">
+          <div className="container mx-auto px-4">
+            <div className="mb-8">
+
+                <h2 className="text-2xl font-semibold sm:text-3xl">Related Products</h2>
+
+            </div>
+
+            <ProductCard data={topRelatedProducts} />
+          </div>
+        </section>
+      )}
     </>
   );
 }

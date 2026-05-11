@@ -1,42 +1,79 @@
 
-import { Product } from "@/interfaces/productInterface";
+import { ProductResponse } from "@/interfaces/productInterface";
 import Link from "next/link";
 import CarouselHomeSection from "@/components/Carousel";
 import ProductCard from "@/components/ProductCard";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
-  
+type HomeProps = {
+  searchParams?: Promise<{
+    page?: string;
+  }>;
+};
+
+function getVisiblePages(currentPage: number, totalPages: number, maxVisible = 5) {
+  if (totalPages <= maxVisible) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const half = Math.floor(maxVisible / 2);
+  let start = Math.max(1, currentPage - half);
+  const end = Math.min(totalPages, start + maxVisible - 1);
+
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+  const requestedPage = Number.parseInt(params?.page ?? "1", 10);
+  const page = Number.isNaN(requestedPage) || requestedPage < 1 ? 1 : requestedPage;
+  const limit = 12;
+
   const response = await fetch(
-    "https://ecommerce.routemisr.com/api/v1/products?limit=12",
+    `https://ecommerce.routemisr.com/api/v1/products?limit=${limit}&page=${page}`,
     {
       method: "GET",
     }
   );
-  const { data }: { data: Product[] } = await response.json();
+  const { data, metadata }: ProductResponse = await response.json();
+  const currentPage = metadata?.currentPage ?? page;
+  const totalPages = metadata?.numberOfPages ?? 1;
+  const visiblePages = getVisiblePages(currentPage, totalPages);
 
   return (
     <>
 
-    <main className=" space-y-20 mt-8">
+    <main className="space-y-16 lg:space-y-20 mt-6 lg:mt-8">
 
       <section>
-        <div className="container bg-gray-200 dark:bg-gray-700 mx-auto rounded-2xl">
+        <div className="container bg-gray-200 dark:bg-gray-700 mx-auto rounded-2xl overflow-hidden">
           <CarouselHomeSection />
         </div>
       </section>
 
       <section >
-        <div className="container mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-between">
-          <div className="flex space-x-4 items-center">
+        <div className="container mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-20 bg-gray-200 dark:bg-gray-800 p-5 rounded-full"
+              className="size-16 sm:size-20 bg-gray-200 dark:bg-gray-800 p-4 sm:p-5 rounded-full shrink-0"
             >
               <path
                 strokeLinecap="round"
@@ -50,14 +87,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="flex space-x-4 items-center">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-20 bg-gray-200 dark:bg-gray-800 p-5 rounded-full"
+              className="size-16 sm:size-20 bg-gray-200 dark:bg-gray-800 p-4 sm:p-5 rounded-full shrink-0"
             >
               <path
                 strokeLinecap="round"
@@ -72,14 +109,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="flex space-x-4 items-center">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-20 bg-gray-200 dark:bg-gray-800 p-5 rounded-full"
+              className="size-16 sm:size-20 bg-gray-200 dark:bg-gray-800 p-4 sm:p-5 rounded-full shrink-0"
             >
               <path
                 strokeLinecap="round"
@@ -94,14 +131,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="flex space-x-4 items-center">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-20 bg-gray-200 dark:bg-gray-800 p-5 rounded-full"
+              className="size-16 sm:size-20 bg-gray-200 dark:bg-gray-800 p-4 sm:p-5 rounded-full shrink-0"
             >
               <path
                 strokeLinecap="round"
@@ -120,6 +157,39 @@ export default async function Home() {
 
       <section>
         <ProductCard data={data}/>
+
+        <div className="container mx-auto my-8">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href={`/?page=${Math.max(1, currentPage - 1)}`}
+                  aria-disabled={currentPage <= 1}
+                  className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+              {visiblePages.map((pageNumber) => (
+                <PaginationItem key={pageNumber}>
+                  <PaginationLink
+                    href={`/?page=${pageNumber}`}
+                    isActive={pageNumber === currentPage}
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  href={`/?page=${Math.min(totalPages, currentPage + 1)}`}
+                  aria-disabled={currentPage >= totalPages}
+                  className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
 
         <div className="container mx-auto flex justify-center items-center my-5">
           <Link className="font-semibold text-xl bg-gray-800 text-white px-5 py-3 rounded-md" href={"/categories"}> Browse categories</Link>

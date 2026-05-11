@@ -8,13 +8,13 @@ import AddtoWishList from './AddtoWishList'
 export default function ProductCard({data} : {data:Product[]}) {
   return <>
   
-  <div className=" container mx-auto grid md:grid-cols-2 lg:grid-cols-4">
+  <div className="container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {data.map((product) => (
-            <div className=" space-y-3 p-4 border-2 dark:shadow-gray-800 dark:bg-gray-900 rounded-md m-2 duration-200" key={product._id}>
+            <div className="space-y-3 p-4 border-2 dark:shadow-gray-800 dark:bg-gray-900 rounded-md duration-200" key={product._id}>
                 <div className="overflow-hidden hover:cursor-pointer">
               <Link href={"/product/" + product._id}>
                   <Image
-                    className="hover:scale-110 duration-200 w-full"
+                    className="hover:scale-110 duration-200 w-full h-auto"
                     src={product.imageCover}
                     width={300}
                     height={300}

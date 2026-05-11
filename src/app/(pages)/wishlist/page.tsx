@@ -4,11 +4,14 @@ import AddToCart from "@/components/AddToCart";
 import { wishListContext } from "@/context/WishListContext";
 import { getUserToken } from "@/Helpers/getUserToken";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 export default function WishList() {
+  const { status } = useSession();
   const { wishListitems ,getWishList } = useContext(wishListContext);
   const [isLoading, setIsLoading] = useState('')
 
@@ -41,6 +44,27 @@ export default function WishList() {
       await getWishList();
       
     }
+  }
+
+  if (status !== "authenticated") {
+    return (
+      <section className="container mx-auto my-10 px-4">
+        <div className="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-12 text-center">
+          <h1 className="text-3xl font-bold mb-3">My WishList</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
+            You must have an account to start using the wishlist page. Please sign in or create an account first.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <Link href="/login" className="px-5 py-2 rounded-md bg-teal-600 text-white hover:bg-teal-700 transition-colors">
+              Sign In
+            </Link>
+            <Link href="/signup" className="px-5 py-2 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              Create Account
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

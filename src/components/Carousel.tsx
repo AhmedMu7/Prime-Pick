@@ -31,13 +31,13 @@ export default function CarouselHomeSection() {
           >
             <CarouselContent>
               <CarouselItem>
-                <div className="flex justify-evenly items-center">
-                  <div className=" space-y-5">
-                    <span className=" block">Feel the real quality sound</span>
-                    <h3 className="text-6xl font-bold max-w-sm">
+                <div className="flex flex-col-reverse items-center justify-evenly gap-8 px-4 py-8 text-center lg:flex-row lg:text-left">
+                  <div className="space-y-5 max-w-sm">
+                    <span className="block text-sm sm:text-base">Feel the real quality sound</span>
+                    <h3 className="text-3xl sm:text-4xl lg:text-6xl font-bold max-w-sm mx-auto lg:mx-0">
                       Headphone ProMax
                     </h3>
-                    <button className="bg-teal-600 flex items-center px-5 py-2 rounded-md text-white">
+                    <button className="bg-teal-600 inline-flex items-center justify-center px-5 py-2 rounded-md text-white mx-auto lg:mx-0">
                       Shop now{" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -55,17 +55,17 @@ export default function CarouselHomeSection() {
                       </svg>
                     </button>
                   </div>
-                  <Image src={heroimg1} width={470} height={470} alt="name" />
+                  <Image className="w-full max-w-[260px] sm:max-w-sm lg:max-w-[470px] h-auto" src={heroimg1} width={470} height={470} alt="name" />
                 </div>{" "}
               </CarouselItem>
               <CarouselItem>
-                <div className="flex justify-evenly items-center">
-                  <div className=" space-y-5">
-                    <span className=" block">Deal of the weak</span>
-                    <h3 className="text-6xl font-bold max-w-sm">
+                <div className="flex flex-col-reverse items-center justify-evenly gap-8 px-4 py-8 text-center lg:flex-row lg:text-left">
+                  <div className="space-y-5 max-w-sm">
+                    <span className="block text-sm sm:text-base">Deal of the weak</span>
+                    <h3 className="text-3xl sm:text-4xl lg:text-6xl font-bold max-w-sm mx-auto lg:mx-0">
                       Powerful iPad Pro M1
                     </h3>
-                    <button className="bg-teal-600 flex items-center px-5 py-2 rounded-md text-white">
+                    <button className="bg-teal-600 inline-flex items-center justify-center px-5 py-2 rounded-md text-white mx-auto lg:mx-0">
                       Shop now{" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -83,18 +83,18 @@ export default function CarouselHomeSection() {
                       </svg>
                     </button>
                   </div>
-                  <Image src={heroimg2} width={470} height={470} alt="name" />
+                  <Image className="w-full max-w-[260px] sm:max-w-sm lg:max-w-[470px] h-auto" src={heroimg2} width={470} height={470} alt="name" />
                 </div>
               </CarouselItem>
               <CarouselItem>
                 {" "}
-                <div className="flex justify-evenly items-center">
-                  <div className=" space-y-5">
-                    <span className=" block">Virtual reality glasses </span>
-                    <h3 className="text-6xl font-bold max-w-sm">
+                <div className="flex flex-col-reverse items-center justify-evenly gap-8 px-4 py-8 text-center lg:flex-row lg:text-left">
+                  <div className="space-y-5 max-w-sm">
+                    <span className="block text-sm sm:text-base">Virtual reality glasses </span>
+                    <h3 className="text-3xl sm:text-4xl lg:text-6xl font-bold max-w-sm mx-auto lg:mx-0">
                       Experience New Reality
                     </h3>
-                    <button className="bg-teal-600 flex items-center px-5 py-2 rounded-md text-white">
+                    <button className="bg-teal-600 inline-flex items-center justify-center px-5 py-2 rounded-md text-white mx-auto lg:mx-0">
                       Shop now{" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function CarouselHomeSection() {
                       </svg>
                     </button>
                   </div>
-                  <Image src={heroimg3} width={470} height={470} alt="name" />
+                  <Image className="w-full max-w-[260px] sm:max-w-sm lg:max-w-[470px] h-auto" src={heroimg3} width={470} height={470} alt="name" />
                 </div>
               </CarouselItem>
             </CarouselContent>
