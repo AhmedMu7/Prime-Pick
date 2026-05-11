@@ -5,9 +5,22 @@ import React from "react";
 export const dynamic = 'force-dynamic';
 
 export default async function Brands() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/get-brands`, { cache: 'no-store' });
+  let data: Brand[] = [];
 
-  const { data }: { data: Brand[] } = await response.json();
+  try {
+    const response = await fetch("https://ecommerce.routemisr.com/api/v1/brands", {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch brands: ${response.status}`);
+    }
+
+    const result: { data: Brand[] } = await response.json();
+    data = result.data;
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+  }
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 py-8 sm:py-12 lg:py-16">
