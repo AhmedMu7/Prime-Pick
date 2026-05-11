@@ -191,9 +191,6 @@ export default async function Home({ searchParams }: HomeProps) {
           </Pagination>
         </div>
 
-        <div className="container mx-auto flex justify-center items-center my-5">
-          <Link className="font-semibold text-xl bg-gray-800 text-white px-5 py-3 rounded-md" href={"/categories"}> Browse categories</Link>
-        </div>
       </section>
     </main>
     </>

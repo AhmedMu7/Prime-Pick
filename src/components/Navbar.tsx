@@ -22,7 +22,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-gray-800 py-4">
+    <nav className="z-50 sticky top-0 bg-gray-800 py-4">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="shrink-0 text-2xl font-semibold text-white sm:text-3xl">
